@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ProductCategory} from "../../common/product-category";
-import {ProductService} from "../../services/product.service";
+import {ProductCategory} from '../../common/product-category';
+import {ProductService} from '../../services/product.service';
 
 @Component({
   selector: 'app-product-category-menu',
@@ -20,7 +20,7 @@ export class ProductCategoryMenuComponent implements OnInit {
   listProductCategories() {
     this.productService.getProductCategories().subscribe(
       data => {
-        console.log('Product Categories = ' + JSON.stringify(data));
+        //  console.log('Product Categories = ' + JSON.stringify(data));
         this.productCategories = data;
       }
     );
