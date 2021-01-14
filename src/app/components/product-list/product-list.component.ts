@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/common/product';
 import { ActivatedRoute } from '@angular/router';
+import { CartItem } from 'src/app/common/cart-item';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -23,6 +25,7 @@ export class ProductListComponent implements OnInit {
   previousKeyword: string = null;
 
   constructor(private productService: ProductService,
+              private cartService: CartService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -51,7 +54,7 @@ export class ProductListComponent implements OnInit {
     // if we have a different keyword than previous
     // then set thePageNumber to 1
 
-    if (this.previousKeyword != theKeyword) {
+    if (this.previousKeyword !== theKeyword) {
       this.thePageNumber = 1;
     }
 
@@ -61,9 +64,8 @@ export class ProductListComponent implements OnInit {
 
     // now search for the products using keyword
     this.productService.searchProductsPaginate(this.thePageNumber - 1,
-      this.thePageSize,
-      theKeyword).subscribe(this.processResult());
-
+                                               this.thePageSize,
+                                               theKeyword).subscribe(this.processResult());
   }
 
   handleListProducts() {
@@ -97,9 +99,9 @@ export class ProductListComponent implements OnInit {
 
     // now get the products for the given category id
     this.productService.getProductListPaginate(this.thePageNumber - 1,
-      this.thePageSize,
-      this.currentCategoryId)
-      .subscribe(this.processResult());
+                                               this.thePageSize,
+                                               this.currentCategoryId)
+                                               .subscribe(this.processResult());
   }
 
   processResult() {
@@ -117,5 +119,13 @@ export class ProductListComponent implements OnInit {
     this.listProducts();
   }
 
+  addToCart(theProduct: Product) {
+    console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`);
+
+    // TODO ... do the real work
+    const theCartItem = new CartItem(theProduct);
+
+    this.cartService.addToCart(theCartItem);
+  }
 
 }
